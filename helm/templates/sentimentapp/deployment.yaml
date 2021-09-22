@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sentimentapp
+  name: sentimentapp
+  namespace: {{ .Values.namespace.name }}
+spec:
+  replicas: {{ .Values.sentimentapp.replicaCount }}
+  selector:
+    matchLabels:
+      app: sentimentapp
+  template:
+    metadata:
+      labels:
+        app: sentimentapp
+    spec:
+      containers:
+      - image: adammcquistan/textblob-sentiment-app:latest
+        name: sentimentapp
+        env:
+        - name: SENTIMENT_API_DNS
+          value: "sentimentapi"
+        - name: SENTIMENT_API_PORT
+          value: "{{ .Values.sentimentapi.containerPort }}"
+        ports:
+        - containerPort: {{ .Values.sentimentapp.containerPort }}

@@ -1,0 +1,9 @@
+apiVersion: v1
+name: python-sentiment
+keywords:
+  - sentiment
+  - nlp
+version: 1.0.0
+maintainers:
+  - name: adam mcquistan
+    email: adam.mcquistan@thecodinginterface.com

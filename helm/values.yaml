@@ -1,0 +1,11 @@
+namespace:
+  name: python-sentiment-sbx
+
+sentimentapi:
+  replicaCount: 3
+  containerPort: 8000
+
+sentimentapp:
+  replicaCount: 3
+  containerPort: 5000
+  serviceType: NodePort

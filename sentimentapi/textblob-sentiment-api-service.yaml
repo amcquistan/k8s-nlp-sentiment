@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: textblob-sentiment-api
+  name: textblob-sentiment-api
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: textblob-sentiment-api
+  type: NodePort
+status:
+  loadBalancer: {}
