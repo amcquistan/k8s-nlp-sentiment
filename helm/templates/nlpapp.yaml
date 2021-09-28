@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nlpapp
+  name: nlpapp
+  namespace: {{ .Values.namespace.name }}
+spec:
+  replicas: {{ .Values.nlpapp.replicaCount }}
+  selector:
+    matchLabels:
+      app: nlpapp
+  template:
+    metadata:
+      labels:
+        app: nlpapp
+    spec:
+      containers:
+      - image: adammcquistan/flask-nlp-app:latest
+        name: nlpapp
+        imagePullPolicy: Always
+        env:
+        - name: BOOTSTRAP_SERVER
+          value: "{{ .Values.kafka.bootstrapServers }}"
+        - name: KAFKA_TOPIC
+          value: "{{ .Values.kafka.urlsTopic }}"
+        - name: REDIS_HOST
+          value: "{{ .Values.redis.host }}"
+        ports:
+        - containerPort: {{ .Values.nlpapp.containerPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nlpapp
+  name: nlpapp
+  namespace: {{ .Values.namespace.name }}
+spec:
+  ports:
+  - port: {{ .Values.nlpapp.svcPort }}
+    protocol: TCP
+    targetPort: {{ .Values.nlpapp.containerPort }}
+  selector:
+    app: nlpapp
+  type: {{ .Values.nlpapp.serviceType }}

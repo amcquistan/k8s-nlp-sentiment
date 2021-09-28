@@ -1,0 +1,4 @@
+export BOOTSTRAP_SERVER=127.0.0.1:9092
+export KAFKA_TOPIC=urls
+export REDIS_HOST=127.0.0.1
+export FLASK_APP=nlpapp
