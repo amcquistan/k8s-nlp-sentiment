@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nlpconsumer
+  name: nlpconsumer
+  namespace: {{ .Values.namespace.name }}
+spec:
+  replicas: {{ .Values.nlpconsumer.replicaCount }}
+  selector:
+    matchLabels:
+      app: nlpconsumer
+  template:
+    metadata:
+      labels:
+        app: nlpconsumer
+    spec:
+      containers:
+      - image: adammcquistan/nlp-kafka-consumer:latest
+        name: nlpconsumer
+        imagePullPolicy: Always
+        env:
+        - name: BOOTSTRAP_SERVER
+          value: "{{ .Values.kafka.bootstrapServers }}"
+        - name: KAFKA_TOPIC
+          value: "{{ .Values.kafka.urlsTopic }}"
+        - name: REDIS_HOST
+          value: "{{ .Values.redis.host }}"
+        - name: CONSUMER_GROUP
+          value: "{{ .Values.nlpconsumer.consumerGroup }}"

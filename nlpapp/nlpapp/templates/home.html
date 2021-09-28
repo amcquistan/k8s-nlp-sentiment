@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div id='app'>
+
+    <div class='row'>
+      <div class='col-8 offset-2'>
+        <form @submit="handleSubmit" class='mt-3' method='POST'>
+
+          <div class='form-group'>
+            <label for='url'>URL</label>
+            <input type='text' class='form-control' id='url' v-model='url' placeholder='webpage url to analyze'>
+          </div>
+
+          <div class="mt-3 control">
+            <input type='submit' value='Analyze' class='btn btn-primary'/>
+          </div>
+        </form>
+
+        <div class='mt-4' v-if="results">
+          <div class='form-group row'>
+            <label id='url-results' class='col-3 col-form-label'>Polarity</label>
+            <div class='col-8'>
+              [[ results.polarity ]]
+            </div>
+            <div class='col-1'>
+              <i class='material-icons' v-if="results.polarity < -0.3" title='unhappy'>sentiment_very_dissatisfied</i>
+              <i class='material-icons' v-if="results.polarity > 0.3" title='happy'>sentiment_very_satisfied</i>
+              <i class='material-icons' v-else title='neutral'>sentiment_satisfied</i>
+            </div>
+          </div>
+          <div class='form-group row'>
+            <label id='url-results' class='col-3 col-form-label'>Subjectivity</label>
+            <div class='col-8'>
+              [[ results.subjectivity ]]
+            </div>
+            <div class='col-1'>
+              <i class='material-icons' v-if="results.subjectivity <= 0.5" title='objective / factual'>info_outline</i>
+              <i class='material-icons' v-else title='subjective / opinionated'>whatshot</i>
+            </div>
+          </div>
+
+          <div class='form-group row'>
+            <label for="nouns" class='col-3 col-form-label'>Noun Phrases</label>
+            <div class='col-9'>
+              <ul class='list-group'>
+                <li class='list-group-item' v-for='noun in results.nouns' :key='noun'>[[ noun ]]</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+  new Vue({
+    delimiters: ["[[","]]"],
+    el: '#app',
+    data: {
+      results: null,
+      url: '',
+      timer: null
+    },
+    methods: {
+      handleSubmit: async function(e) {
+        e.preventDefault();
+        this.results = null
+
+        const response = await fetch('/analyze-text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({url: this.url})
+        })
+
+        const data = await response.json()
+        if (data.status === 'submitted') {
+          this.timer = setInterval(() => {
+            try {
+              fetch('/analysis-results?' + new URLSearchParams({ url: this.url }))
+                 .then(response => response.json())
+                 .then(results => {
+                    if (results.hasOwnProperty('url')) {
+                      this.results = results
+                      this.clearTimer()
+                    }
+                 })
+            } catch(err) {
+              console.log(err)
+              this.clearTimer()
+            }
+          },
+          500)
+        }
+
+      },
+      clearTimer: function() {
+        if (!this.timer) return;
+        clearInterval(this.timer)
+      }
+    },
+    beforeDestroy: function() {
+      this.clearTimer()
+    }
+  })
+</script>
+{% endblock %}

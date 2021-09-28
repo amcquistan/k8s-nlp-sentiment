@@ -1,11 +1,19 @@
 namespace:
-  name: python-sentiment-sbx
+  name: nlp-local
 
-sentimentapi:
-  replicaCount: 3
-  containerPort: 8000
-
-sentimentapp:
-  replicaCount: 3
+nlpapp:
+  replicaCount: 2
+  svcPort: 80
   containerPort: 5000
   serviceType: NodePort
+
+nlpconsumer:
+  replicaCount: 1
+  consumerGroup: "urls-0"
+
+kafka:
+  urlsTopic: urls
+  bootstrapServers: kafka-0.kafka-headless.default.svc.cluster.local:9092
+
+redis:
+  host: redis

@@ -1,0 +1,8 @@
+namespace:
+  name: nlp-aws-sbx
+
+nlpapp:
+  replicaCount: 2
+  svcPort: 80
+  containerPort: 5000
+  serviceType: LoadBalancer
