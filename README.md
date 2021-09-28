@@ -33,9 +33,9 @@ __4) Redis__
 The redis component is a simple key/value store for associating urls (key) to NLP analysis results (value).
 
 
-### Local Development (without Docker Compose)
+### Local Development (with Docker Compose)
 
-In this mode of development one would spin a standalone development Kafka cluster and redis instance using the docker-compose.yaml file in the localdevtest directory. Then nlpapp and nlpconsumer can be separately launched.
+In this mode of development one would spin a standalone development Kafka cluster, redis instance, nlpapp and nlpconsumer apps using the docker-compose.yaml file in the localdevtest directory.
 
 First spin up the Docker services.
 
@@ -48,9 +48,9 @@ At this point you should now be able to request http://127.0.0.1:5000 in your br
 
 ### Local Development with Kubernetes
 
-In order to developer, test, and experiment with this application locally using Kubernetes you will need a locally installed and running kubernetes cluster along with the helm kubernetes package / template manager installed locally.
+In order to develop, test, and experiment with this application locally you will need a locally installed and running kubernetes cluster along with the [helm kubernetes package / template manager](https://helm.sh/docs/intro/install/) installed locally.
 
-I will not be providing instructions on how to install and configure kubernetes locally but, there is a Vagrant file that included in this repository that can be used to provision a linux VM using Virtual Box which you could then install Kubernetes on such as k3s. Some other options are minikube as well as the kubernetes integration in Docker Desktop.
+I will not be providing instructions on how to install and configure kubernetes locally but, there is a Vagrant file that is included in this repository that can be used to provision a linux VM using Virtual Box which you could then install a Kubernetes distribution on such as [k3s](https://k3s.io/). Some other options are [minikube](https://minikube.sigs.k8s.io/docs/start/) as well as [Docker Desktop Kubernetes](https://docs.docker.com/desktop/kubernetes/).
 
 Ensure that your kubectl / kubeconifg is set with the active context to your local kubernetes install.
 
@@ -66,7 +66,7 @@ Then install the Kafka helm chart.
 helm install kafka bitnami/kafka
 ```
 
-You can verify the Kafka install by launching a Kafka client pod on kubernetes.
+You can verify the Kafka install by launching a Kafka client pod on k8s cluster.
 
 ```
 kubectl run kafka-client \
@@ -82,7 +82,7 @@ Connect to the Kafka client pod.
 kubectl exec --tty -i kafka-client --namespace default -- bash
 ```
 
-Produce some test messages to a Kafka topic named test (ctrl + C to exit after entering some messages).
+Produce some test messages to a Kafka topic named test.
 
 ```
 kafka-console-producer.sh \
@@ -99,13 +99,13 @@ kafka-console-consumer.sh \
     --from-beginning
 ```
 
-Launch the remaining NLP Application from the local helm chart in the helm directory. Issue the next command from the project root (ie, along side the helm directory)
+Launch the remaining NLP Application from the local helm chart in the helm directory. 
 
 ```
 helm install nlp ./helm
 ```
 
-A new namespace named nlp-local will be created in the k8s cluster. Issue the following to see the k8s resources installed in the new namespace.
+A new namespace named nlp-local will be created in the k8s cluster. Issue the following to see the resources installed in the new namespace.
 
 ```
 kubectl get all --namespace nlp-local
@@ -189,7 +189,7 @@ Connect to the Kafka client pod.
 kubectl exec --tty -i kafka-client --namespace default -- bash
 ```
 
-Produce some test messages to a Kafka topic named test (ctrl + C to exit after entering some messages).
+Produce some test messages to a Kafka topic named test.
 
 ```
 kafka-console-producer.sh \
@@ -214,7 +214,7 @@ helm install -f helm/aws-sbx-values.yaml nlp ./helm
 
 A new namespace named nlp-aws-sbx will be created in the k8s cluster. 
 
-Fetch info for the frontend nlpapp service to identify the NodePort that was assigned to it so you can use it to access the webpage from your local environment.
+Fetch info for the frontend nlpapp service to identify the external endpoint that was assigned as part of launching an application load balancer so you can use it to access the webpage from your browser.
 
 ```
 kubectl get svc nlpapp --namespace nlp-aws-sbx
