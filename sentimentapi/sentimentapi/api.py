@@ -6,6 +6,7 @@ from textblob import TextBlob
 
 app = Flask(__name__)
 
+
 @app.route('/sentiment', methods=('POST',))
 def sentiment():
     data = request.get_json()
