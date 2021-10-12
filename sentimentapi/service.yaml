@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sentiment-api
+  name: sentiment-api
+  namespace: simple-demo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: sentiment-api
+status:
+  loadBalancer: {}

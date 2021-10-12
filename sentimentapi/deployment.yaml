@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sentiment-api
+  name: sentiment-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sentiment-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sentiment-api
+    spec:
+      containers:
+      - image: adammcquistan/textblob-sentiment-api:0.0.1
+        name: textblob-sentiment-api
+        resources: {}
+status: {}
