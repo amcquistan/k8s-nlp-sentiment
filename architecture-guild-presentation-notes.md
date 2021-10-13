@@ -8,6 +8,9 @@ In this section I introduce the basics of the TextBlob NLP library for calculati
 including how to wrap the TextBlob NLP library in Flask REST API, containerize it and deploy it
 to a Kubernetes (K8s) cluster.
 
+
+<img src="./containerized-nlp-Simple.jpg">
+
 ### Build Sentiment API Locally
 
 Create sentiment service api directory structure.
