@@ -32,6 +32,7 @@ __4) Redis__
 
 The redis component is a simple key/value store for associating urls (key) to NLP analysis results (value).
 
+<img src="./containerized-nlp-Complex.jpg">
 
 ### Local Development (with Docker Compose)
 
