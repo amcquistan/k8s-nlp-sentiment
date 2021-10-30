@@ -42,7 +42,7 @@ services:
       - broker
       - nlpconsumer
     ports:
-      - "5000:5000"
+      - "5005:5000"
 
   nlpconsumer:
     image: adammcquistan/nlp-kafka-consumer

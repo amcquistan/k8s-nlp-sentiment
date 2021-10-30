@@ -90,6 +90,7 @@
                  .then(response => response.json())
                  .then(results => {
                     if (results.hasOwnProperty('url')) {
+                      results.nouns = Array.from(new Set(results.nouns.map(n => n.toLowerCase())))
                       this.results = results
                       this.clearTimer()
                     }
