@@ -91,7 +91,7 @@ class ErrCallback:
     # ... omitted for brevity
 ```
 
-The next key part is the Kafka consumer which fetches the webpage of the URL pulled from Kafka and utilizes the TextBlob library for text analysis as shown below.
+The next key part is the Kafka consumer which fetches the webpage of the URL pulled from Kafka and utilizes the TextBlob library for text analysis as shown below. Specifically, the text analysis calculates sentiment metrics of polarity and subjectivity. For polarity the measures span from -1 inferring the content is harshly negative to +1 inferring joyous positive tone with values near 0 being relatively neutral. The subjectivity score ranges from 0 inferring factual based content to 1 implying opinion based reasoning.
 
 ```
 # nlpconsumer/webnlp.py
