@@ -291,4 +291,4 @@ In just a few hundred lines of code plus a couple of Dockerfiles and some YAML I
 
 ### Acknowledgements
 
-I'd like to thank Linda Rohr and Jerrid Derr for their support and feedback on this article.
+I'd like to thank Linda Rohr and Jerrid Derr for their support and feedback on this article. Special thanks are also given to Annette Allen for her work leading the Mutual of Omaha tech blog initiative.
