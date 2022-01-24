@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Technology drives maximal value to the enterprise not through wielding the power of specific programming languages but by composing multiple component technologies into systems that model, automate and deliver complex business processes. Luckily there exists the amazing world of Docker, container tools and the ecosystem of images. Collectively these significantly lower the technical barrier to experimenting with a wide variety of technologies leading to faster cycles of learning and innovation. In the container world there are endless purpose built images provided by open source communities and vendors with popular technologies installed and configured to run with minimal effort. Containers can be stitched together and run as Docker Compose services in relatively short order. 
+Technology drives maximal value to the enterprise not through wielding the power of specific programming languages but by composing multiple component technologies into systems that model, automate and deliver complex business processes. Luckily there exists the amazing world of Docker, container tools and the ecosystem of images. Collectively these significantly lower the technical barrier to experimenting with a wide variety of technologies leading to faster cycles of learning and innovation. In the container world there are endless purpose built images provided by open source communities and vendors with popular technologies installed and configured to run with minimal effort. Containers can be stitched together and run as [Docker Compose](https://docs.docker.com/compose/) services in relatively short order. 
 
 ### Overview of the Demo Application
 
@@ -12,7 +12,7 @@ Below is the high-level architecture of the system and the source code can be fo
 
 <img src="./Containerized-NLP-Diagram.jpg">
 
-The frontend application utilizes the Python based Flask microframework along with Vue.js for an interactive UI. The URL is submitted via the frontend and relayed to a Kafka topic. Next another containerized Python application consumes the URL from Kafka and utilizes the open source Text Blob and Natural Language Toolkit (NLTK) ML libraries to perform text analytics then writes the result to a Redis key/value store running in yet another container. While this happens Javascript in the frontend polls a REST API for results matching to the original URL then displays them in the browser.
+The frontend application utilizes the Python based Flask microframework along with Vue.js for an interactive UI. The URL is submitted via the frontend and relayed to a Kafka topic. Next another containerized Python application consumes the URL from Kafka and utilizes the open source [TextBlob](https://textblob.readthedocs.io/en/dev/) and Natural Language Toolkit (NLTK) ML libraries to perform text analytics then writes the result to a Redis key/value store running in yet another container. While this happens Javascript in the frontend polls a REST API for results matching to the original URL then displays them in the browser.
 
 The Flask app source is contained in a single file shown below consisting of a handler function that serves up the UI web page and two REST based endpoints. One REST endpoint is for handling a POST request with the URL then producing it to the containers running Kafka and the second REST endpoint is for fetching the results of the analysis.  
 
@@ -206,7 +206,7 @@ ADD . .
 ENTRYPOINT ["python", "webnlp.py"]
 ```
 
-The remaining components are the Kafka message bus cluster and a Redis key/value store which are normally fairly complex pieces of technology to install and configure. However, Confluent provides open source community licensed images for both Zookeeper and the Kafka broker. The Redis open source project provides a similarly well established image as well. So all that remains is to assemble a docker-compose.yml file which composes the various containers into a single deployable unit as shown below.
+The remaining components are the Kafka message bus cluster and a Redis key/value store which are normally fairly complex pieces of technology to install and configure. However, Confluent provides open source community licensed images for both [Zookeeper and the Kafka](https://github.com/confluentinc/cp-all-in-one/tree/7.0.1-post/cp-all-in-one-community) broker. The [Redis open source project](https://hub.docker.com/_/redis) provides a similarly well established image as well. So all that remains is to assemble a docker-compose.yml file which composes the various containers into a single deployable unit as shown below.
 
 ```
 version: '2'
