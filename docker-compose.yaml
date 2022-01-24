@@ -31,7 +31,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   nlpapp:
-    image: adammcquistan/flask-nlp-app
+    build: nlpapp
     container_name: nlpapp
     environment:
       BOOTSTRAP_SERVER: "broker:29092"
@@ -42,10 +42,10 @@ services:
       - broker
       - nlpconsumer
     ports:
-      - "5000:5000"
+      - "9001:5000"
 
   nlpconsumer:
-    image: adammcquistan/nlp-kafka-consumer
+    build: nlpconsumer
     container_name: nlpconsumer
     environment:
       BOOTSTRAP_SERVER: "broker:29092"
